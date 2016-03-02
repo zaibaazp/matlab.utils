@@ -44,6 +44,11 @@ end
 
 grayImage = imread(fullFileName);
 
+% is it really gray?
+if size(grayImage,3)>1
+    grayImage = rgb2gray(grayImage);
+end
+
 imagesc(grayImage);
 axis on;
 title('Original Grayscale Image', 'FontSize', fontSize);
