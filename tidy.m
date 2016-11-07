@@ -1,5 +1,3 @@
-function tidy
-
-clear all
-close all
-clc
+clear all;
+close all;
+clc;
