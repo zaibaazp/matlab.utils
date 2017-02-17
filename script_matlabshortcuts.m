@@ -102,3 +102,14 @@ set(gcf,'InvertHardcopy','off')
 print('-depsc','-r300',filename1);
 print('-dpng','-r300',filename2);
 savefig(filename3);
+
+%% FOLDERNAME
+% part of: UTILS
+switch chooseplatform
+    case 'win'
+        FOLDERNAME = 'C:\Users\jsolisl\Dropbox';
+    otherwise 
+        FOLDERNAME = '~/Dropbox';
+end 
+FOLDERNAME = strcat(FOLDERNAME, filesep, 'CityUniversity-Dropbox');
+FOLDERNAME = uigetdir(FOLDERNAME);
