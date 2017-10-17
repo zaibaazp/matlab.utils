@@ -6,7 +6,7 @@ tidy ;
 
 fs = 100;
 fi = linspace(0.4,15, 10);
-time2 = 0:(1/fs):60;
+time2 = (0:(1/fs):60)';
 N = length(time2);
 x = zeros(size(time2));
 for ix=1:length(fi)
@@ -17,7 +17,7 @@ powx = rms(x)^2;
 
 SNR = 10;
 powe = powx/(10^(SNR/10));
-e = sqrt(powe).*randn(1,N);
+e = sqrt(powe).*randn(size(time2));
 xnoisy = x+e;
 
 
@@ -55,6 +55,9 @@ grid on;
 
 
 %% visualise (interactively)
+
 close all
 clc
-[timeidx] = mysignalAnayser(time2, xnoisy);
+mysignalAnayser(time2, xnoisy);
+
+

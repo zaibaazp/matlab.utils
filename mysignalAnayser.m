@@ -1,4 +1,4 @@
-function [timeidx] = mysignalAnayser(time2, xnoisy)
+function mysignalAnayser(time2, xnoisy)
 % mysignalAnalyser. Tool to dynamically visualise the tracks from
 % structure handles, that allows the user to change the parameters of
 % plotTracksAndFrame in the same GUI.
@@ -19,7 +19,6 @@ function [timeidx] = mysignalAnayser(time2, xnoisy)
 
 if nargin < 2
     fprintf('%s: ERROR time vecttor and signal required!.\n', mfilename);
-    timeidx = [];
 end
 
 test = false;
@@ -27,18 +26,20 @@ test = false;
 opts.ma = max(xnoisy);
 opts.mi = min(xnoisy);
 
-startingsec = 5;
+startingsec = 1;
 stepsStartsize = 1:round(length(xnoisy)/100);
 numstepstarts = length(stepsStartsize)-1;
 
-sizesec = 20;
-stepsWinsize = 5:5:55;
+sizesec = 30;
+stepsWinsize =1:3:55;
 numstepswin = length(stepsWinsize)-1;
 
 % figure
 f = gcf;
 set(gcf, 'Position', [2 291 1233 705]);
 clf
+
+guidata(f, struct('test', false));
 
 ax = axes('Parent',f,'position',[0.13 0.29  0.77 0.64]);
 b = uicontrol('Parent',f,'Style','slider','Position',[81,54,419,23],...
@@ -64,7 +65,7 @@ b2l3 = uicontrol('Parent',f,'Style','text','Position',[240,80,100,23],...
 
 
 b3 = uicontrol('Style', 'pushbutton', 'String', 'Get interval', ...
-    'Position', [550,54,121,23], 'Callback', @returnValues);
+    'Position', [550,54,121,23]);%, 'Callback', @returnValues);
 
 
 opts.ma = max(xnoisy);
@@ -77,16 +78,16 @@ b2.Callback = @(es,ed) plotsignalintime(time2, xnoisy, ...
 
 timeidx = [round(b2.Value) round(b.Value)];
 
-%if exist(b3.returnValues)
-    timeidx = [round(b2.Value) round(b.Value)];
-    close(f);
-%end
-
+b3.Callback = @(es,ed) buttonCallback(time2, b2.Value, b.Value);
 end
 
+function buttonCallback(time2, startingsec, winsizesec)
+startingidx = find(time2==startingsec);
+sizeidx = winsizesec*100;
 
-function returnValues(ObjectH, EventData)
-   handles = guidata(ObjectH);  % Get struct from figure
-   handles.returnValues = true;
-   guidata(ObjectH, handles);  % Put struct to figure
+endinterval = min(startingidx+sizeidx, length(time2));
+thisinterval = startingidx:endinterval;
+
+assignin('base', 'thisInterval', thisinterval);
 end
+
