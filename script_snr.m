@@ -4,11 +4,11 @@
 fs = 100;
 fi = linspace(0.4,15, 10);
 %fi=4;
-t = 0:(1/fs):1000;
+t = 0:(1/fs):6000;
 N = length(t);
 x = zeros(size(t));
 for ix=1:length(fi)
-    x = x + randi([1 4]).*sin(2*pi*fi(ix).*t);
+    x = x + randi([1 5]).*sin(2*pi*fi(ix).*t);
 end
 
 powx = rms(x)^2;
@@ -16,7 +16,7 @@ powx = rms(x)^2;
 [pxx, f] = pwelch(x,120,60,500,fs);
 
 %% Generation of a noise variable for a given SNR
-SNR = 2;
+SNR = 10;
 powe = powx/(10^(SNR/10));
 
 e = sqrt(powe).*randn(1,N);
