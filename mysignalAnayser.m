@@ -30,7 +30,7 @@ startingsec = 1;
 stepsStartsize = 1:round(length(xnoisy)/100);
 numstepstarts = length(stepsStartsize)-1;
 
-sizesec = 30;
+sizesec = 20;
 stepsWinsize =1:3:55;
 numstepswin = length(stepsWinsize)-1;
 
@@ -38,8 +38,6 @@ numstepswin = length(stepsWinsize)-1;
 f = gcf;
 set(gcf, 'Position', [2 291 1233 705]);
 clf
-
-guidata(f, struct('test', false));
 
 ax = axes('Parent',f,'position',[0.13 0.29  0.77 0.64]);
 b = uicontrol('Parent',f,'Style','slider','Position',[81,54,419,23],...
@@ -67,27 +65,15 @@ b2l3 = uicontrol('Parent',f,'Style','text','Position',[240,80,100,23],...
 b3 = uicontrol('Style', 'pushbutton', 'String', 'Get interval', ...
     'Position', [550,54,121,23]);%, 'Callback', @returnValues);
 
-
-opts.ma = max(xnoisy);
-opts.mi = min(xnoisy);
+opts.ma = max(xnoisy(:));
+opts.mi = min(xnoisy(:));
+opts.save2file = false;
 
 b.Callback = @(es,ed) plotsignalintime(time2, xnoisy, ...
     round(b2.Value), round(es.Value), opts);
 b2.Callback = @(es,ed) plotsignalintime(time2, xnoisy, ...
     round(es.Value), round(b.Value), opts);
-
-timeidx = [round(b2.Value) round(b.Value)];
-
-b3.Callback = @(es,ed) buttonCallback(time2, b2.Value, b.Value);
-end
-
-function buttonCallback(time2, startingsec, winsizesec)
-startingidx = find(time2==startingsec);
-sizeidx = winsizesec*100;
-
-endinterval = min(startingidx+sizeidx, length(time2));
-thisinterval = startingidx:endinterval;
-
-assignin('base', 'thisInterval', thisinterval);
+b3.Callback = @(es,ed) plotsignalintime(time2, xnoisy, ...
+    round(b2.Value), round(b.Value), setfield(opts, 'save2file', true));
 end
 

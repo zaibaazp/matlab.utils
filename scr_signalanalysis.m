@@ -3,7 +3,40 @@
 %% dummy signal
 
 tidy ;
+[time2, xnoisy] = getdummysignal();
+xnoisy = [xnoisy -xnoisy./2];
 
+%% plot signal in time (inner function)
+% in: 
+
+opts.ma = max(xnoisy(:));
+opts.mi = min(xnoisy(:));
+opts.save2file = false;
+opts.fs = 100; % change your sampling frequency
+
+winsizesec = 5; % interval size in seconds
+startingsec = 30; % second where the interval starts
+
+figure(1)
+plotsignalintime(time2, xnoisy, startingsec, winsizesec, opts)
+
+%% visualise (interactively)
+
+close all
+clc
+mysignalAnayser(time2, xnoisy);
+
+while ~exist('thisInterval.mat', 'file')
+    % tell matlab to wait around while you choose your figure
+    pause(3);
+end
+close all;
+disp('out of the while')
+load('thisInterval');
+delete('thisInterval.mat');
+
+%%
+function [time2, xnoisy] = getdummysignal()
 fs = 100;
 fi = linspace(0.4,15, 10);
 time2 = (0:(1/fs):60)';
@@ -19,45 +52,4 @@ SNR = 10;
 powe = powx/(10^(SNR/10));
 e = sqrt(powe).*randn(size(time2));
 xnoisy = x+e;
-
-
-%% plot signal in time (inner function)
-% in: 
-
-ma = max(xnoisy);
-mi = min(xnoisy);
-
-% interval size in seconds
-intsizeseconds = 5;
-intsizeidx = intsizeseconds*100;
-
-% starting point of interval
-startingsec = 30;
-startingidx = find(time2==startingsec);
-
-thisinterval = startingidx:(startingidx+intsizeidx);
-
-figure(1)
-clf;
-set(gcf, 'Position', [2 291 1233 705]);
-subplot(4,1,1)
-plot(time2, xnoisy, time2(thisinterval), xnoisy(thisinterval), ':');
-ylim([mi*0.8 ma*1.2]);
-rectangle('Position', [time2(startingidx) 0.8*mi intsizeseconds (ma-mi)],...
-    'EdgeColor', 'k', 'linestyle', '--', 'linewidth', 2);
-grid on;
-
-
-subplot(4,1,[2 3])
-plot(time2(thisinterval), xnoisy(thisinterval));
-ylim([mi*0.8 ma*1.2]);
-grid on;
-
-
-%% visualise (interactively)
-
-close all
-clc
-mysignalAnayser(time2, xnoisy);
-
-
+end
