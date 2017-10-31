@@ -2,9 +2,9 @@
 %
 %% Generation of signal (with energy in frecuencies 0.5 to 10)
 fs = 100;
-fi = linspace(0.4,15, 10);
+fi = linspace(1,3, 10);
 %fi=4;
-t = 0:(1/fs):6000;
+t = 0:(1/fs):10;
 N = length(t);
 x = zeros(size(t));
 for ix=1:length(fi)
@@ -16,7 +16,7 @@ powx = rms(x)^2;
 [pxx, f] = pwelch(x,120,60,500,fs);
 
 %% Generation of a noise variable for a given SNR
-SNR = 10;
+SNR = 2;
 powe = powx/(10^(SNR/10));
 
 e = sqrt(powe).*randn(1,N);
@@ -50,7 +50,7 @@ rnoisy = snr(xnoisy,fs);
 revar = 10*log10(var(xnoisy)/evar(xnoisy))-1;
 
 fprintf('Pre-set SNR = %d, \n', SNR);
-fprintf('|��snr (normal)�� |��snr (pxx)�� |�    mean/std�   |    integral     |\n')
-fprintf('|��%2.2f | %2.2f��|��%2.2f | %2.2f��|��%2.2f | %2.2f��|\n',...
-    rpxxnoisy, rpxx, ustd, ustdnoisy, snrint, snrintnoisy);
+fprintf('|snr (normal)|snr (pxx)|  mean/std | |\n')
+fprintf('|%2.2f | %2.2f |%2.2f | |\n',...
+        gtsnr, rnoisy, revar);
 
