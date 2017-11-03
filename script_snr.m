@@ -55,7 +55,7 @@ currData = load('onetestppg.mat');
 t = currData.t;
 x = currData.x;
 Fs = 500; % from this data
-SNR = 10;
+SNR = 1;
 
 % "additive white gaussian noise"
 xawgn = awgn(x, SNR, 'measured');
