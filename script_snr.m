@@ -21,22 +21,51 @@ powe = powx/(10^(SNR/10));
 
 e = sqrt(powe).*randn(1,N);
 
-%% create noisy signal
+xawgn = awgn(x, SNR);
 xnoisy = x+e;
+
+%% create noisy signal
+
 [pxxnoisy] = pwelch(xnoisy,120,60,500,fs);
+
 figure(1)
-subplot(221)
+subplot(231)
 plot(t(1:1000),x(1:1000));
 title('normal')
-subplot(223)
+subplot(234)
 pwelch(x,120,60,500,fs);
-subplot(222)
+
+subplot(232)
 plot(t(1:1000),xnoisy(1:1000));
 title('noisy')
-subplot(224)
+subplot(235)
 pwelch(xnoisy,120,60,500,fs);
 
+subplot(233)
+plot(t(1:1000),xawgn(1:1000));
+title('AWGN')
+subplot(236)
+pwelch(xawgn,120,60,500,fs);
+
 thSNR = 10*log10(powx/powe);
+%% SOME MINOR PPG TESTS
+tidy;
+
+currData = load('onetestppg.mat');
+t = currData.t;
+x = currData.x;
+Fs = 500; % from this data
+SNR = 10;
+
+% "additive white gaussian noise"
+xawgn = awgn(x, SNR, 'measured');
+
+% play around with this value
+windw = 100;
+xsmooth = smoothdata(xawgn, 'rloess', windw);
+
+mysignalAnayser(t, [xawgn' x' xsmooth']);
+
 %% calculate snr through various methods
 
 % ground truth using SNR function in matlab (known noise, i.e cheating)

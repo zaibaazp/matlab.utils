@@ -16,7 +16,8 @@ else
     [ma, mi, fs, save2file] = getoptions(opts);
 end
 
-startingidx = find(time2==startingsec);
+[~, minidx] = min(abs(time2-startingsec));
+startingidx = minidx;
 sizeidx = winsizesec*fs;
 
 endinterval = min(startingidx+sizeidx, length(time2));
