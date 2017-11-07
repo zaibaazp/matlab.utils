@@ -1,4 +1,4 @@
-function mysignalAnayser(time2, xnoisy)
+function mysignalAnalyser(time2, xnoisy)
 % mysignalAnalyser. Tool to dynamically visualise the tracks from
 % structure handles, that allows the user to change the parameters of
 % plotTracksAndFrame in the same GUI.
