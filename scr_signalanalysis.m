@@ -24,7 +24,7 @@ plotsignalintime(time2, xnoisy, startingsec, winsizesec, opts)
 
 close all
 clc
-mysignalAnayser(time2, xnoisy);
+mysignalAnalyser(time2, xnoisy);
 
 while ~exist('thisInterval.mat', 'file')
     % tell matlab to wait around while you choose your figure
