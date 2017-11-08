@@ -55,7 +55,7 @@ currData = load('onetestppg.mat');
 t = currData.t;
 x = currData.x;
 Fs = 500; % from this data
-SNR = 1;
+SNR = 25;
 
 % "additive white gaussian noise"
 xawgn = awgn(x, SNR, 'measured');
@@ -64,7 +64,7 @@ xawgn = awgn(x, SNR, 'measured');
 windw = 100;
 xsmooth = smoothdata(xawgn, 'rloess', windw);
 
-mysignalAnayser(t, [xawgn' x' xsmooth']);
+mysignalAnalyser(t, [xawgn' x' xsmooth']);
 
 %% calculate snr through various methods
 
