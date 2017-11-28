@@ -6,7 +6,7 @@ newpath = basefilename;
 if isdir(basefilename)
     fprintf('%s: Folder names appear to be consistent. No changes done.\n',...
         mfilename);
-    return
+    return;
 end
 
 switch chooseplatform
