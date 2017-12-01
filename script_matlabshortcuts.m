@@ -10,6 +10,32 @@ colormap(1-hot);
 % part of: COLOUR
 parula2 = cat(1,[0 0 0],parula);
 colormap(parula2);
+%% BONE
+% part of: COLOUR
+colormap bone;
+%% HOT
+% part of: COLOUR
+colormap hot;
+%% INVERSE BONE
+% part of: COLOUR
+ibone = 1-bone;
+colormap(ibone);
+clear ibone;
+%% RANDOM 
+% part of: COLOUR
+if ~exist('auxcmap', 'var')
+    axucmap = rand(255,3);
+    axucmap(:,1) = sort(axucmap(:,1));
+    axucmap = [[0 0 0]; axucmap];
+end
+colormap(axucmap);
+%% BACK2GREY
+% part of: COLOUR
+cmap = 0.75.*[sort(rand(254,1)) sort(rand(254,1)) sort(rand(254,1))];
+cmap = [0 0 0; cmap];
+colormap(cmap);
+
+clear cmap;
 %% CLOSE
 % part of: UTILS
 close all
@@ -26,6 +52,18 @@ clear currAxPos
 %% TIGHT SUBPLOTS
 % part of: UTILS
 tightfig
+%% CLOUD STORAGE
+%part of: UTILS
+% GET a specific directory and save it into FOLDERNAME
+switch chooseplatform
+    case 'win'
+        CLOUDFOLDER = 'C:\Users\jsolisl\Dropbox';
+    otherwise 
+        CLOUDFOLDER = '~/Dropbox';
+end 
+CLOUDFOLDER= strcat(CLOUDFOLDER, filesep,...
+    'CityUniversity-Dropbox', filesep, 'images');
+CLOUDFOLDER = uigetdir(CLOUDFOLDER);
 %% EPS
 % part of: SAVE FIGURE
 gcf;
@@ -102,14 +140,3 @@ set(gcf,'InvertHardcopy','off')
 print('-depsc','-r300',filename1);
 print('-dpng','-r300',filename2);
 savefig(filename3);
-
-%% FOLDERNAME
-% part of: UTILS
-switch chooseplatform
-    case 'win'
-        FOLDERNAME = 'C:\Users\jsolisl\Dropbox';
-    otherwise 
-        FOLDERNAME = '~/Dropbox';
-end 
-FOLDERNAME = strcat(FOLDERNAME, filesep, 'CityUniversity-Dropbox');
-FOLDERNAME = uigetdir(FOLDERNAME);
