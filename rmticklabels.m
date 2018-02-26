@@ -1,0 +1,2 @@
+xticklabels([]);
+yticklabels([]);
